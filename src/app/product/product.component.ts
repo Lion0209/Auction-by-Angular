@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService , Product} from '../shared/product.service';
+import { FormControl } from '../../../node_modules/@angular/forms';
+import 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -8,15 +10,26 @@ import { ProductService , Product} from '../shared/product.service';
 })
 export class ProductComponent implements OnInit {
 
+  private keyword:string;
   private products:Product[];
   private imgUrl="../../assets/images/1.jpg";
 
-  constructor(private productService:ProductService) { }
+
+  private titleFilter:FormControl=new FormControl();
+  constructor(private productService:ProductService) {
+
+   }
 
   ngOnInit() {
     this.products=this.productService.getProducts();
+
+    //响应式编程
+    this.titleFilter.valueChanges.subscribe(
+      value=>this.keyword=value
+    );
   }
 
+  
 }
 
 
