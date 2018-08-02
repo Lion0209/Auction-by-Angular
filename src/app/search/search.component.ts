@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormGroup,FormBuilder, Validators, FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-search',
@@ -7,9 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
 
-  constructor() { }
+  formModel:FormGroup;
+  constructor() {
+    let fb=new FormBuilder();
+    this.formModel=fb.group({
+      title:['',Validators.minLength(3)],
+      price:[null,this.positiveNumberValidator ],
+      category:['-1']
+    });
+   }
 
   ngOnInit() {
+  }
+
+  positiveNumberValidator(control:FormControl):any{
+    if(!control.value){
+      return null;
+    }
+    let price = parseInt(control.value);
+
+    if(price>0){
+      return null;
+    }else{
+      return {positiveNumber:true};
+    }
   }
 
 }
